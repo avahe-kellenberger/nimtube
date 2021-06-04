@@ -21,13 +21,13 @@ macro describe*(description: string, body: untyped): untyped =
     result.add body
 
 template test*(description: string, test: untyped) =
-  stdout.write("  " & description)
   block:
+    # TODO: Print errors after {title} [Failed]
     try:
       test
-      echo " [Success]"
+      echo "  " & description & " [Success]"
     except:
-      echo " [Failed]"
+      echo "  " & description & " [Failed]"
 
 template assertRaises*(exception: typedesc, errorMessage: string, code: untyped) =
   ## Raises ``AssertionDefect`` if specified ``code`` does not raise the
