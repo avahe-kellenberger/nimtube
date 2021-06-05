@@ -20,11 +20,11 @@ macro describe*(description: string, body: untyped): untyped =
   else:
     result.add body
 
-template test*(description: string, test: untyped) =
+template test*(description: string, body: untyped) =
   block:
     # TODO: Print errors after {title} [Failed]
     try:
-      test
+      body
       echo "  " & description & " [Success]"
     except:
       echo "  " & description & " [Failed]"
