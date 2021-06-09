@@ -7,6 +7,8 @@ import
   re,
   options
 
+export re
+
 # See https://developers.google.com/youtube/v3/docs#Videos
 
 type SearchResult* = tuple[title: string, url: string]
@@ -17,7 +19,7 @@ const
 
 let
   apiKey = getEnv("YOUTUBE_API_KEY", "")
-  youtubeVidIDRegex = re""".*(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11}).*"""
+  youtubeVidIDRegex* = re""".*(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11}).*"""
 
 template toYoutubeURL(videoId: string): string = youtubeURLPrefix & videoId
 
@@ -67,7 +69,9 @@ proc findVideoTitle*(videoURL: string): string =
     return findVideoTitleFromID(id)
 
 when isMainModule:
-  let videoURL = "https://www.youtube.com/watch?v=8ptH79R53c0"
-  let title = parseVideoID(videoURL)
-  echo title
+  let s = "I need the real battlefield https://youtu.be/Mk4wEAO07hM?t=54"
+  if s =~ youtubeVidIDRegex:
+    for match in matches:
+      if match.len > 0:
+        echo match
 
